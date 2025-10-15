@@ -1,0 +1,212 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String          @id @default(uuid()) @db.Char(36)
+  enrollmentNo    String          @unique @db.VarChar(64)
+  passwordHash    String
+  balance         Float           @default(10000)
+  trades          Trade[]
+  holdings        Holding[]
+  orders          Order[]
+  sessionReports  SessionReport[]
+  leaderboard     Leaderboard[]
+  alerts          Alert[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@map("users")
+}
+
+model Holding {
+  id        String   @id @default(uuid())
+  userId    String   @db.Char(36)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  symbol    String   @db.VarChar(64)
+  quantity  Int
+  avgPrice  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, symbol])
+  @@map("holdings")
+}
+
+model Trade {
+  id        String   @id @default(uuid())
+  userId    String   @db.Char(36)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  symbol    String   @db.VarChar(64)
+  action    String   // BUY or SELL
+  quantity  Int
+  price     Float
+  value     Float
+  createdAt DateTime @default(now())
+
+  @@map("trades")
+  @@index([userId])
+  @@index([symbol])
+  @@index([createdAt])
+}
+
+model Session {
+  id          String   @id @default(uuid())
+  isActive    Boolean  @default(false)
+  startTime   DateTime?
+  endTime     DateTime?
+  currentTick Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model PriceData {
+  id        String   @id @default(uuid())
+  symbol    String   @db.VarChar(64)
+  price     Float
+  tick      Int
+  createdAt DateTime @default(now())
+
+  @@unique([symbol, tick], name: "symbol_tick")
+  @@map("price_data")
+}
+
+model Order {
+  id          String   @id @default(uuid())
+  userId      String   @db.Char(36)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  symbol      String   @db.VarChar(64)
+  type        String   // MARKET, LIMIT, STOP_LOSS, TAKE_PROFIT
+  side        String   // BUY, SELL
+  quantity    Int
+  targetPrice Float?   // For LIMIT, STOP_LOSS, TAKE_PROFIT orders
+  status      String   // PENDING, EXECUTED, CANCELLED
+  executedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("orders")
+  @@index([userId])
+  @@index([symbol])
+  @@index([createdAt])
+}
+
+model SessionReport {
+  id              String   @id @default(uuid())
+  userId          String   @db.Char(36)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessionId       String   @db.Char(36)
+  startTime       DateTime
+  endTime         DateTime
+  duration        Int      // Duration in minutes
+  totalTrades     Int
+  winningTrades   Int
+  losingTrades    Int
+  breakEvenTrades Int
+  winRate         Float
+  totalPnL        Float
+  bestTrade       Float
+  worstTrade      Float
+  avgWin          Float
+  avgLoss         Float
+  profitFactor    Float
+  totalVolume     Int
+  avgTradeSize    Float
+  maxDrawdown     Float
+  sharpeRatio     Float
+  finalBalance    Float
+  finalValue      Float
+  createdAt       DateTime @default(now())
+
+  @@map("session_reports")
+}
+
+model Leaderboard {
+  id            String   @id @default(uuid())
+  sessionId     String   @db.Char(36)
+  userId        String   @db.Char(36)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rank          Int
+  portfolioValue Float
+  pnl           Float
+  pnlPercent    Float
+  tradesCount   Int
+  winRate       Float
+  maxDrawdown   Float
+  sharpeRatio   Float
+  createdAt     DateTime @default(now())
+
+  @@unique([sessionId, userId])
+  @@map("leaderboard")
+}
+
+model Alert {
+  id            String   @id @default(uuid())
+  userId        String   @db.Char(36)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  symbol        String   @db.VarChar(64)
+  type          String   // price_above, price_below, stop_loss, take_profit, session_warning
+  targetPrice   Float?
+  condition     String
+  message       String
+  isActive      Boolean  @default(true)
+  triggeredAt   DateTime?
+  triggeredPrice Float?
+  createdAt     DateTime @default(now())
+
+  @@map("alerts")
+  @@index([userId])
+  @@index([symbol])
+  @@index([createdAt])
+}
+
+model LeaderboardSnapshot {
+  id        String   @id @default(uuid())
+  dataJson  String   // JSON.stringify(rankings)
+  createdAt DateTime @default(now())
+
+  @@map("leaderboard_snapshots")
+  @@index([createdAt])
+}
+
+// Optional: TradeHistory as a view over trades, but we map to a concrete table for portability
+model TradeHistory {
+  id        String   @id @default(uuid())
+  userId    String
+  symbol    String
+  action    String
+  quantity  Int
+  price     Float
+  value     Float
+  createdAt DateTime @default(now())
+
+  @@map("trade_history")
+  @@index([userId])
+  @@index([symbol])
+  @@index([createdAt])
+}
+
+model NewsEvent {
+  id          String   @id @default(uuid())
+  symbol      String   @db.VarChar(64)  // Company symbol or "MARKET" for market-wide events
+  headline    String
+  content     String?  // Optional detailed content
+  impact      String   // positive, negative, neutral
+  priceImpact Float?   // Expected price impact percentage (1-3%)
+  category    String   // earnings, lawsuit, merger, fed, inflation, etc.
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime? // When news item should fade out
+
+  @@map("news_events")
+}
