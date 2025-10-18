@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id              String          @id @default(uuid()) @db.Char(36)
-  enrollmentNo    String          @unique @db.VarChar(64)
+  id              String          @id @default(uuid())
+  enrollmentNo    String          @unique
   passwordHash    String
   balance         Float           @default(10000)
   trades          Trade[]
@@ -29,9 +29,9 @@ model User {
 
 model Holding {
   id        String   @id @default(uuid())
-  userId    String   @db.Char(36)
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  symbol    String   @db.VarChar(64)
+  symbol    String
   quantity  Int
   avgPrice  Float
   createdAt DateTime @default(now())
@@ -43,9 +43,9 @@ model Holding {
 
 model Trade {
   id        String   @id @default(uuid())
-  userId    String   @db.Char(36)
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  symbol    String   @db.VarChar(64)
+  symbol    String
   action    String   // BUY or SELL
   quantity  Int
   price     Float
@@ -72,12 +72,12 @@ model Session {
 
 model PriceData {
   id        String   @id @default(uuid())
-  symbol    String   @db.VarChar(64)
+  symbol    String
   price     Float
   tick      Int
   createdAt DateTime @default(now())
 
-  @@unique([symbol, tick], name: "symbol_tick")
+  @@unique([symbol, tick])
   @@map("price_data")
 }
 
@@ -103,9 +103,9 @@ model Order {
 
 model SessionReport {
   id              String   @id @default(uuid())
-  userId          String   @db.Char(36)
+  userId          String
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  sessionId       String   @db.Char(36)
+  sessionId       String
   startTime       DateTime
   endTime         DateTime
   duration        Int      // Duration in minutes
@@ -133,8 +133,8 @@ model SessionReport {
 
 model Leaderboard {
   id            String   @id @default(uuid())
-  sessionId     String   @db.Char(36)
-  userId        String   @db.Char(36)
+  sessionId     String
+  userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   rank          Int
   portfolioValue Float
@@ -152,7 +152,7 @@ model Leaderboard {
 
 model Alert {
   id            String   @id @default(uuid())
-  userId        String   @db.Char(36)
+  userId        String
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   symbol        String   @db.VarChar(64)
   type          String   // price_above, price_below, stop_loss, take_profit, session_warning
