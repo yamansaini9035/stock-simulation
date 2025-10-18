@@ -8,6 +8,11 @@ const nextConfig = {
     // Do not block builds on ESLint errors (Vercel will still show them)
     ignoreDuringBuilds: true,
   },
+  
+  // Disable PostCSS processing to avoid autoprefixer issues
+  experimental: {
+    esmExternals: false,
+  },
 }
 
 module.exports = nextConfig

@@ -1,12 +1,22 @@
+/* Basic styles without Tailwind directives */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-/* TailwindCSS directives - these are valid and necessary */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Basic reset and utility classes */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-/* Custom scrollbar styling for dark mode */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+/* Custom scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -17,406 +27,176 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #374151; /* gray-700 */
+  background: #374151;
   border-radius: 3px;
-  transition: background 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4B5563; /* gray-600 */
+  background: #4b5563;
 }
 
-::-webkit-scrollbar-corner {
-  background: transparent;
+/* Basic utility classes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* Firefox scrollbar styling */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #374151 transparent;
+.flex {
+  display: flex;
 }
 
-/* Hide specific watermark elements only */
-[data-widget-name="watermark"],
-[class*="watermark"]:not([class*="chart"]),
-[title*="TradingView"],
-[title*="T7"] {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
+.flex-col {
+  flex-direction: column;
 }
 
-@layer base {
-  :root {
-    /* Ultra Modern Sleek Theme */
-    --background: 5 5 8; /* #050508 - Ultra deep black */
-    --foreground: 255 255 255; /* #FFFFFF - Pure white for primary text */
-    --card: 15 15 20; /* #0F0F14 - Sleek dark panels */
-    --card-foreground: 255 255 255; /* #FFFFFF - Pure white card text */
-    --popover: 15 15 20; /* #0F0F14 - Sleek dark popover */
-    --popover-foreground: 255 255 255; /* #FFFFFF - Pure white popover text */
-    --primary: 0 255 200; /* #00FFC8 - Bright cyan primary */
-    --primary-foreground: 0 0 0; /* black - Primary text */
-    --secondary: 15 15 20; /* #0F0F14 - Sleek dark secondary */
-    --secondary-foreground: 255 255 255; /* white - Secondary text */
-    --muted: 15 15 20; /* #0F0F14 - Sleek dark muted */
-    --muted-foreground: 255 255 255; /* #FFFFFF - White for secondary info */
-    --accent: 0 255 200; /* #00FFC8 - Bright cyan accent */
-    --accent-foreground: 0 0 0; /* black - Accent text */
-    --destructive: 255 100 100; /* #FF6464 - Modern red destructive */
-    --destructive-foreground: 255 255 255; /* white - Destructive text */
-    --border: 0 255 200; /* #00FFC8 - Bright cyan borders */
-    --input: 15 15 20; /* #0F0F14 - Sleek dark input */
-    --ring: 0 255 200; /* #00FFC8 - Bright cyan focus ring */
-    --radius: 0.75rem;
-    
-    /* Trading specific colors */
-    --success: 0 255 150; /* #00FF96 - Bright green for gains */
-    --success-foreground: 0 0 0; /* black - Success text */
-    --warning: 255 200 0; /* #FFC800 - Bright yellow warning */
-    --warning-foreground: 0 0 0; /* black - Warning text */
-    --info: 0 255 200; /* #00FFC8 - Bright cyan info */
-    --info-foreground: 0 0 0; /* black - Info text */
-    --neutral: 255 255 255; /* #FFFFFF - White neutral */
-    --neutral-foreground: 0 0 0; /* black - Neutral text */
-    
-    /* Chart colors */
-    --chart-bullish: 0 255 150; /* #00FF96 - Bright green for gains */
-    --chart-bearish: 255 100 100; /* #FF6464 - Modern red for losses */
-    --chart-grid: 60 60 80; /* #3C3C50 - Subtle dark grid */
-    --chart-text: 240 240 255; /* #F0F0FF - Light chart text */
-    
-    /* Ultra Modern panel variations */
-    --panel-portfolio: 20 20 30; /* #14141E - Dark slate for Portfolio */
-    --panel-trade: 25 20 35; /* #191423 - Dark purple for Trade */
-    --panel-holdings: 20 25 35; /* #141923 - Dark blue for Holdings */
-  }
+.items-center {
+  align-items: center;
 }
 
-@layer base {
-  * {
-    /* @apply is a TailwindCSS directive - valid and necessary */
-    @apply border-border;
-  }
-  
-  body {
-    @apply bg-slate-900 text-slate-50 font-sans;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold text-slate-50;
-  }
-  
-  /* Monospaced font for numbers */
-  .font-mono {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-  }
+.justify-center {
+  justify-content: center;
 }
 
-@layer components {
-  .card-tradingview {
-    @apply rounded-xl border border-cyan-500/30 hover:border-cyan-500/60 transition-all duration-200 shadow-sm hover:shadow-md;
-    background: rgb(20 20 30); /* Rich dark slate */
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1), inset 0 0 10px rgba(0, 255, 255, 0.05);
-  }
-  
-  .btn-buy {
-    @apply bg-green-500 hover:bg-green-600 text-black font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95;
-    background: #00FF7F; /* Vibrant neon green */
-    box-shadow: 0 0 25px rgba(0, 255, 127, 0.6), 0 0 50px rgba(0, 255, 127, 0.3), inset 0 0 15px rgba(0, 255, 127, 0.1);
-  }
-  
-  .btn-sell {
-    @apply bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95;
-    background: #FF5050; /* Vibrant red */
-    box-shadow: 0 0 25px rgba(255, 0, 0, 0.6), 0 0 50px rgba(255, 0, 0, 0.3), inset 0 0 15px rgba(255, 0, 0, 0.1);
-  }
-  
-  .text-gain {
-    @apply font-mono font-semibold;
-    color: #00FF7F; /* Vibrant neon green */
-    text-shadow: 0 0 15px rgba(0, 255, 127, 0.8), 0 0 30px rgba(0, 255, 127, 0.4);
-  }
-  
-  .text-loss {
-    @apply font-mono font-semibold;
-    color: #FF5050; /* Vibrant red */
-    text-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.4);
-  }
-  
-  .text-neutral {
-    @apply text-white font-mono;
-  }
-  
-  .status-badge {
-    @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium border;
-  }
-  
-  .status-active {
-    @apply bg-green-500/20 text-green-400 border-green-500/30;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4), inset 0 0 10px rgba(34, 197, 94, 0.1);
-    text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
-  }
-  
-  .status-inactive {
-    @apply bg-red-500/20 text-red-400 border-red-500/30;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4), inset 0 0 10px rgba(239, 68, 68, 0.1);
-    text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
-  }
-  
-  .watchlist-item {
-    @apply flex items-center justify-between p-3 hover:bg-gray-700/50 cursor-pointer transition-all duration-200 border-b border-gray-700/30 rounded-lg mx-2 my-1 hover:shadow-sm;
-  }
-  
-  .watchlist-item:hover {
-    @apply bg-gray-700/60 transform translate-x-1;
-  }
-  
-  .watchlist-item.selected {
-    @apply bg-cyan-500/10 border border-cyan-500/50 shadow-md;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5), 0 0 50px rgba(0, 255, 255, 0.2), inset 0 0 15px rgba(0, 255, 255, 0.1);
-    border-color: #00FFFF;
-  }
-  
-  .price-change {
-    @apply text-xs font-mono px-2 py-1 rounded-md font-semibold;
-  }
-  
-  .price-change.positive {
-    @apply bg-green-500/20 text-green-400;
-    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4), inset 0 0 8px rgba(34, 197, 94, 0.1);
-    text-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
-  }
-  
-  .price-change.negative {
-    @apply bg-red-500/20 text-red-400;
-    box-shadow: 0 0 15px rgba(239, 68, 68, 0.4), inset 0 0 8px rgba(239, 68, 68, 0.1);
-    text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
-  }
-  
-  .price-change.neutral {
-    @apply bg-yellow-500/20 text-yellow-400;
-  }
-  
-  /* Enhanced typography hierarchy */
-  .text-display {
-    @apply text-3xl font-bold text-white font-mono tracking-tight;
-  }
-  
-  .text-heading {
-    @apply text-xl font-semibold text-white;
-  }
-  
-  .text-subheading {
-    @apply text-sm font-medium text-white;
-  }
-  
-  .text-body {
-    @apply text-sm text-white;
-  }
-  
-  .text-caption {
-    @apply text-xs text-white;
-  }
-  
-  /* Modern card styles */
-  .card-modern {
-    @apply bg-gray-800/50 rounded-xl border border-gray-700/50 shadow-sm hover:shadow-md transition-all duration-200;
-  }
-  
-  .card-elevated {
-    @apply bg-gray-800/70 rounded-xl border border-gray-700/50 shadow-lg hover:shadow-xl transition-all duration-200;
-  }
-  
-  /* Interactive elements */
-  .interactive {
-    @apply transition-all duration-200 hover:scale-105 active:scale-95;
-  }
-  
-  .interactive-subtle {
-    @apply transition-all duration-200 hover:scale-102 active:scale-98;
-  }
-  
-  /* Cinematic Neon Effects - Final Polish */
-  .neon-teal-glow {
-    box-shadow: 0 0 25px rgba(0, 191, 165, 0.5), 0 0 50px rgba(0, 191, 165, 0.2), inset 0 0 15px rgba(0, 191, 165, 0.1);
-    border-color: #00FFFF;
-  }
-  
-  .neon-purple-glow {
-    box-shadow: 0 0 20px rgba(147, 51, 234, 0.4), 0 0 40px rgba(147, 51, 234, 0.15);
-    border-color: #9333EA;
-  }
-  
-  .neon-blue-glow {
-    box-shadow: 0 0 25px rgba(59, 130, 246, 0.5), 0 0 50px rgba(59, 130, 246, 0.2);
-    border-color: #3B82F6;
-  }
-  
-  .text-neon-teal {
-    @apply text-teal-400;
-    text-shadow: 0 0 15px rgba(0, 191, 165, 0.8), 0 0 30px rgba(0, 191, 165, 0.4), 0 0 45px rgba(0, 191, 165, 0.2);
-  }
-  
-  .text-neon-purple {
-    @apply text-purple-400;
-    text-shadow: 0 0 15px rgba(147, 51, 234, 0.8), 0 0 30px rgba(147, 51, 234, 0.4);
-  }
-  
-  .text-neon-green {
-    @apply text-green-400;
-    text-shadow: 0 0 12px rgba(34, 197, 94, 0.7), 0 0 24px rgba(34, 197, 94, 0.3);
-  }
-  
-  .text-neon-red {
-    @apply text-red-400;
-    text-shadow: 0 0 12px rgba(239, 68, 68, 0.7), 0 0 24px rgba(239, 68, 68, 0.3);
-  }
-  
-  .section-divider {
-    @apply border-t border-purple-500/40;
-    box-shadow: 0 0 15px rgba(147, 51, 234, 0.3), 0 0 30px rgba(147, 51, 234, 0.1);
-  }
-  
-  .chart-button-active {
-    @apply border-2 border-teal-500 bg-teal-500/15;
-    box-shadow: 0 0 20px rgba(0, 191, 165, 0.6), 0 0 40px rgba(0, 191, 165, 0.2), inset 0 0 15px rgba(0, 191, 165, 0.1);
-  }
-  
-  .portfolio-value {
-    @apply text-white font-bold text-3xl;
-    text-shadow: 0 0 15px rgba(0, 191, 165, 0.6), 0 0 30px rgba(0, 191, 165, 0.3);
-  }
-  
-  .price-container-glow {
-    @apply border border-teal-500/50;
-    box-shadow: 0 0 20px rgba(0, 191, 165, 0.4), 0 0 40px rgba(0, 191, 165, 0.1), inset 0 0 10px rgba(0, 191, 165, 0.05);
-  }
-  
-  .stock-title-glow {
-    @apply text-white font-bold;
-    text-shadow: 0 0 10px rgba(0, 191, 165, 0.5), 0 0 20px rgba(0, 191, 165, 0.2);
-  }
-  
-  .header-divider {
-    @apply border-b border-purple-500/40;
-    box-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
-  }
-  
-  .grid-subtle {
-    opacity: 0.08;
-  }
-  
-  /* Enhanced Button Glows */
-  .btn-buy-enhanced {
-    @apply text-black font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95;
-    background: #00FF7F; /* Vibrant neon green */
-    box-shadow: 0 0 30px rgba(0, 255, 127, 0.8), 0 0 60px rgba(0, 255, 127, 0.4), inset 0 0 20px rgba(0, 255, 127, 0.2);
-  }
-  
-  .btn-sell-enhanced {
-    @apply text-white font-semibold px-6 py-3 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95;
-    background: #FF5050; /* Vibrant red */
-    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8), 0 0 60px rgba(255, 0, 0, 0.4), inset 0 0 20px rgba(255, 0, 0, 0.2);
-  }
-  
-  /* Ultra Modern Sleek Panel Variations */
-  .console-portfolio {
-    background: linear-gradient(135deg, rgb(20 20 30) 0%, rgb(15 15 20) 100%);
-    border: 1px solid rgba(0, 255, 200, 0.4);
-    box-shadow: 0 8px 32px rgba(0, 255, 200, 0.15), 0 0 0 1px rgba(0, 255, 200, 0.1);
-    backdrop-filter: blur(10px);
-  }
-  
-  .console-trade {
-    background: linear-gradient(135deg, rgb(25 20 35) 0%, rgb(15 15 20) 100%);
-    border: 1px solid rgba(0, 255, 200, 0.4);
-    box-shadow: 0 8px 32px rgba(0, 255, 200, 0.15), 0 0 0 1px rgba(0, 255, 200, 0.1);
-    backdrop-filter: blur(10px);
-  }
-  
-  .console-holdings {
-    background: linear-gradient(135deg, rgb(20 25 35) 0%, rgb(15 15 20) 100%);
-    border: 1px solid rgba(0, 255, 200, 0.4);
-    box-shadow: 0 8px 32px rgba(0, 255, 200, 0.15), 0 0 0 1px rgba(0, 255, 200, 0.1);
-    backdrop-filter: blur(10px);
-  }
-  
-  /* Ultra Modern Sleek Styling */
-  .accent-teal {
-    color: #00FFC8; /* Bright cyan */
-  }
-  
-  .accent-green {
-    color: #00FF96; /* Bright green */
-  }
-  
-  .accent-red {
-    color: #FF6464; /* Modern red */
-  }
-  
-  .text-primary {
-    color: #FFFFFF; /* Pure white */
-  }
-  
-  .text-secondary {
-    color: #FFFFFF; /* Pure white for secondary info */
-  }
-  
-  /* Ultra Modern Header Dividers */
-  .header-divider {
-    border-bottom: 1px solid rgba(0, 255, 200, 0.4); /* Bright cyan line */
-    margin-top: 8px;
-  }
-  
-  /* Ultra Modern Active States */
-  .active-border {
-    border: 1px solid #00FFC8; /* Bright cyan border */
-    box-shadow: 0 0 20px rgba(0, 255, 200, 0.3);
-  }
-  
-  /* Ultra Modern Price Container */
-  .price-container-clean {
-    background: linear-gradient(135deg, rgba(15, 15, 20, 0.95) 0%, rgba(5, 5, 8, 0.95) 100%);
-    border: 1px solid #00FFC8; /* Bright cyan border */
-    box-shadow: 0 8px 32px rgba(0, 255, 200, 0.25), 0 0 0 1px rgba(0, 255, 200, 0.1), inset 0 0 20px rgba(0, 255, 200, 0.05);
-    backdrop-filter: blur(10px);
-  }
-  
-  /* Ultra Modern Button Styling */
-  .btn-clean-buy {
-    background: linear-gradient(135deg, #00FF96 0%, #00FFC8 100%);
-    color: #000000; /* Black text for contrast */
-    border: none;
-    box-shadow: 0 8px 32px rgba(0, 255, 150, 0.4), 0 0 0 1px rgba(0, 255, 150, 0.2), inset 0 0 20px rgba(0, 255, 150, 0.1);
-  }
-  
-  .btn-clean-sell {
-    background: linear-gradient(135deg, #FF6464 0%, #FF8A8A 100%);
-    color: #FFFFFF; /* White text for contrast */
-    border: none;
-    box-shadow: 0 8px 32px rgba(255, 100, 100, 0.4), 0 0 0 1px rgba(255, 100, 100, 0.2), inset 0 0 20px rgba(255, 100, 100, 0.1);
-  }
+.justify-between {
+  justify-content: space-between;
+}
 
-  /* Portfolio Panel Enhancements */
-  .portfolio-metric-card {
-    background: linear-gradient(135deg, rgba(15, 15, 20, 0.8) 0%, rgba(5, 5, 8, 0.8) 100%);
-    border: 1px solid rgba(0, 255, 200, 0.2);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-  }
+.w-full {
+  width: 100%;
+}
 
-  .portfolio-metric-card:hover {
-    background: linear-gradient(135deg, rgba(15, 15, 20, 0.9) 0%, rgba(5, 5, 8, 0.9) 100%);
-    border-color: rgba(0, 255, 200, 0.4);
-    transform: translateY(-1px);
-  }
+.h-full {
+  height: 100%;
+}
 
-  .total-value-card {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(5, 5, 8, 0.95) 100%);
-    border: 2px solid #00FFC8;
-    box-shadow: 0 8px 32px rgba(0, 255, 200, 0.3), 0 0 0 1px rgba(0, 255, 200, 0.1), inset 0 0 20px rgba(0, 255, 200, 0.05);
-    backdrop-filter: blur(15px);
+.p-4 {
+  padding: 1rem;
+}
+
+.m-4 {
+  margin: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-gray-300 {
+  color: #d1d5db;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.bg-gray-800 {
+  background-color: #1f2937;
+}
+
+.bg-gray-900 {
+  background-color: #111827;
+}
+
+.border {
+  border: 1px solid #374151;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.hover\:bg-gray-700:hover {
+  background-color: #374151;
+}
+
+.transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Chart container styles */
+.chart-container {
+  width: 100%;
+  height: 400px;
+  background: #1f2937;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+/* Button styles */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+/* Card styles */
+.card {
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid #374151;
+}
+
+/* Input styles */
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #374151;
+  border-radius: 0.25rem;
+  background-color: #111827;
+  color: white;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .chart-container {
+    height: 300px;
   }
 }
