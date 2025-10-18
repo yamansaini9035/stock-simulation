@@ -23,16 +23,31 @@ export default async function handler(req, res) {
   try {
     const { enrollmentNo, password } = req.body || {};
     if (!enrollmentNo || !password) return res.status(400).json({ error: 'enrollmentNo and password required' });
+    
+    // Test database connection first
+    await prisma.$connect();
+    
     const passwordHash = await bcrypt.hash(String(password), 10);
     const user = await prisma.user.upsert({
       where: { enrollmentNo: String(enrollmentNo) },
       update: { passwordHash },
       create: { enrollmentNo: String(enrollmentNo), passwordHash },
     });
+    
     return res.status(200).json({ success: true, user: { id: user.id, enrollmentNo: user.enrollmentNo } });
   } catch (err) {
     console.error('auth/register error', err);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error details:', {
+      message: err.message,
+      code: err.code,
+      meta: err.meta
+    });
+    return res.status(500).json({ 
+      error: 'Internal Server Error',
+      details: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
