@@ -1,36 +1,31 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
 import { useWebSocket } from '../lib/useWebSocket';
-import { usePolling } from '../lib/usePolling';
+import { useSimplePolling } from '../lib/useSimplePolling';
 
 const WebSocketContext = createContext(null);
 
 export function WebSocketProvider({ userId, children }) {
-  const [useFallback, setUseFallback] = useState(false);
+  const [useFallback, setUseFallback] = useState(true); // Start with polling by default
   const ws = useWebSocket(userId);
-  const polling = usePolling(userId);
+  const polling = useSimplePolling(userId);
 
-  // Check if WebSocket is working after 3 seconds
+  // Try WebSocket first, but fallback quickly if it fails
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!ws?.isConnected) {
-        console.log('🔄 WebSocket not connected, switching to polling fallback');
+        console.log('🔄 WebSocket not connected, using polling fallback');
         setUseFallback(true);
+      } else {
+        console.log('✅ WebSocket connected, using WebSocket');
+        setUseFallback(false);
       }
-    }, 3000);
+    }, 2000); // Only wait 2 seconds
 
     return () => clearTimeout(timer);
   }, [ws?.isConnected]);
 
-  // Also check immediately if WebSocket is clearly not working
-  useEffect(() => {
-    if (ws && ws.error && !useFallback) {
-      console.log('🔄 WebSocket has error, switching to polling fallback');
-      setUseFallback(true);
-    }
-  }, [ws?.error, useFallback]);
-
-  // Use polling if WebSocket fails
+  // Use polling by default, WebSocket if it works
   const data = useFallback ? polling : ws;
 
   return (
