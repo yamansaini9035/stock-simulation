@@ -20,14 +20,29 @@ export default async function handler(req, res) {
       companies = [];
     }
 
-    // Generate price data with some randomness
+    // Generate price data using original JSON prices as base
     const priceData = companies.map((c) => {
       const symbol = c.symbol || c.ticker || 'SYM';
       let basePrice = Number(c.price || c.base || 100);
       
-      // Add some random movement to make it look live
+      // Try to load original price from individual JSON file
+      try {
+        const p = path.join(process.cwd(), 'public', 'data', `${symbol}.json`);
+        if (fs.existsSync(p)) {
+          const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
+          if (Array.isArray(raw) && raw.length) {
+            const last = raw[raw.length - 1];
+            if (typeof last === 'number') basePrice = Number(last);
+            else if (last && typeof last.close === 'number') basePrice = Number(last.close);
+            else if (last && typeof last.price === 'number') basePrice = Number(last.price);
+            else if (last && typeof last.c === 'number') basePrice = Number(last.c);
+          }
+        }
+      } catch (_) {}
+      
+      // Add some random movement to make it look live (smaller changes)
       const volatility = Number(c.volatility || 0.8);
-      const change = (Math.random() - 0.5) * basePrice * volatility * 0.01; // 1% max change
+      const change = (Math.random() - 0.5) * basePrice * volatility * 0.005; // 0.5% max change
       const newPrice = Math.max(0.01, basePrice + change);
       const changePercent = (change / basePrice) * 100;
       
