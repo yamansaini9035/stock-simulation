@@ -40,9 +40,15 @@ export default async function handler(req, res) {
         }
       } catch (_) {}
       
-      // Add some random movement to make it look live (smaller changes)
+      // Add realistic price movement with trend and volatility
       const volatility = Number(c.volatility || 0.8);
-      const change = (Math.random() - 0.5) * basePrice * volatility * 0.005; // 0.5% max change
+      
+      // Create more realistic price movement with some trend
+      const trendFactor = (Math.random() - 0.5) * 0.3; // Small trend bias
+      const randomFactor = (Math.random() - 0.5) * 0.7; // Random component
+      const totalFactor = trendFactor + randomFactor;
+      
+      const change = totalFactor * basePrice * volatility * 0.003; // 0.3% max change
       const newPrice = Math.max(0.01, basePrice + change);
       const changePercent = (change / basePrice) * 100;
       
