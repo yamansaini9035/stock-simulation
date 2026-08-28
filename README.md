@@ -1,3 +1,12 @@
+## Ownership and permitted use
+
+This project was created and maintained by **Yaman Saini** for educational and society use.
+
+You may view this repository for learning and reference. You may not present this project, in whole or in part, as your own work in a résumé, CV, portfolio, academic submission, or job application without written permission from Yaman Saini.
+
+Contributions are credited through this repository’s Git history.
+
+
 # 📈 Stock Trading Simulation App
 
 A comprehensive real-time stock trading simulation platform built with Next.js, featuring live price updates, portfolio management, trade history, and user authentication. Perfect for educational purposes, college events, and trading practice.
