@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }) {
     // Check for existing authentication token
     const token = localStorage.getItem('trading_token');
     const userData = localStorage.getItem('user_data');
-    
+
     if (token && userData) {
       try {
         const parsedUserData = JSON.parse(userData);
@@ -51,14 +51,17 @@ export default function App({ Component, pageProps }) {
       </Head>
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
         <WebSocketProvider userId={user?.id}>
-          <Component 
-            {...pageProps} 
+          <Component
+            {...pageProps}
             isAuthenticated={isAuthenticated}
             user={user}
             login={login}
             logout={logout}
           />
         </WebSocketProvider>
+        <footer className="border-t border-slate-200 bg-white/80 px-4 py-3 text-center text-xs text-slate-600">
+          © {new Date().getFullYear()} Yaman Saini · Stock Trading Simulation
+        </footer>
       </div>
     </ErrorBoundary>
   );
